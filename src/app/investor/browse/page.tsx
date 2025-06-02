@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { useStore } from '@/lib/store'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatCurrencyCompact } from '@/lib/utils'
 import { PropertyType, ProjectStatus } from '@/lib/types'
 import SearchIcon from '@mui/icons-material/Search'
 import SortIcon from '@mui/icons-material/Sort'
@@ -482,21 +482,21 @@ export default function BrowsePage() {
                           </div>
 
                           {/* Responsive Stats Grid */}
-                          <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
-                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
-                              <div className="text-sm sm:text-lg font-bold text-slate-900 mb-1 truncate">
+                          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
+                            <div className="text-center p-2 sm:p-4 glass-card rounded-xl">
+                              <div className="text-xs sm:text-sm md:text-base font-bold text-slate-900 mb-1 leading-tight">
                                 {formatCurrency(project.financial.minimumInvestment)}
                               </div>
                               <div className="text-xs text-slate-500 font-medium">Min. Investment</div>
                             </div>
-                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
-                              <div className="text-sm sm:text-lg font-bold text-emerald-600 mb-1 truncate">
-                                {formatCurrency(project.financial.currentAmount)}
+                            <div className="text-center p-2 sm:p-4 glass-card rounded-xl">
+                              <div className="text-xs sm:text-sm md:text-base font-bold text-emerald-600 mb-1 leading-tight">
+                                {formatCurrencyCompact(project.financial.currentAmount)}
                               </div>
                               <div className="text-xs text-slate-500 font-medium">Raised</div>
                             </div>
-                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
-                              <div className="text-sm sm:text-lg font-bold text-sky-600 mb-1">{project.investors}</div>
+                            <div className="text-center p-2 sm:p-4 glass-card rounded-xl">
+                              <div className="text-xs sm:text-sm md:text-base font-bold text-sky-600 mb-1 leading-tight">{project.investors}</div>
                               <div className="text-xs text-slate-500 font-medium">Investors</div>
                             </div>
                           </div>

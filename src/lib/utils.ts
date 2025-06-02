@@ -14,6 +14,22 @@ export function formatCurrency(amount: number): string {
   }).format(amount)
 }
 
+export function formatCurrencyCompact(amount: number, forceCompact = false): string {
+  // For very large amounts or when explicitly requested, use compact notation
+  if (amount >= 1000000 || forceCompact) {
+    return new Intl.NumberFormat('en-PH', {
+      style: 'currency',
+      currency: 'PHP',
+      notation: 'compact',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 1
+    }).format(amount)
+  }
+  
+  // For smaller amounts, show full number for transparency
+  return formatCurrency(amount)
+}
+
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('en-PH').format(num)
 }
