@@ -9,7 +9,6 @@ import GroupIcon from '@mui/icons-material/Group'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import AddIcon from '@mui/icons-material/Add'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -211,89 +210,112 @@ export default function DeveloperDashboard() {
           </Link>
         </motion.div>
 
-        {/* Recent Projects */}
+        {/* Active Projects */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="card-highlight rounded-2xl p-6 interactive-card">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-1">Recent Projects</h3>
-                <p className="text-slate-600">Your latest property developments</p>
-              </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1 truncate">Active Projects</h2>
+              <p className="text-slate-600">Monitor your development portfolio</p>
+            </div>
+            <div className="flex-shrink-0">
               <Link href="/developer/projects">
                 <Button 
                   variant="outline" 
-                  size="sm" 
-                  className="btn-premium text-white border-none"
+                  size="sm"
+                  rightIcon={<VisibilityIcon className="w-4 h-4" />}
+                  className="w-full sm:w-auto min-w-[140px]"
                 >
                   View All
                 </Button>
               </Link>
             </div>
-            
-            <div className="space-y-4">
-              {developerProjects.slice(0, 3).map((project, index) => {
-                const fundingProgress = (project.financial.currentAmount / project.financial.targetAmount) * 100
-                const daysLeft = Math.ceil((new Date(project.timeline.fundingDeadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-                
-                return (
-                  <motion.div
-                    key={project.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Link href={`/developer/projects/${project.id}`}>
-                      <div className="glass-card interactive-card rounded-2xl p-5 overflow-hidden">
-                        <div className="flex space-x-4">
-                          <img 
-                            src={project.images[0]} 
-                            alt={project.title}
-                            className="w-20 h-20 rounded-xl object-cover shadow-lg"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h4 className="font-semibold text-slate-900 text-lg">{project.title}</h4>
-                                <div className="flex items-center text-slate-600 mt-1">
-                                  <LocationOnIcon className="w-4 h-4 mr-1" />
-                                  <span className="text-sm">{project.location.city}</span>
-                                </div>
-                              </div>
-                              <MoreHorizIcon className="w-5 h-5 text-slate-400" />
-                            </div>
-                            
-                            <div className="space-y-3">
-                              <div className="flex justify-between text-sm">
-                                <span className="text-slate-600">Funding Progress</span>
-                                <span className="font-semibold text-slate-900">{fundingProgress.toFixed(1)}%</span>
-                              </div>
-                              <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                                <div 
-                                  className="progress-bar h-2 rounded-full transition-all duration-500"
-                                  style={{ width: `${fundingProgress}%` }}
-                                />
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-600">
-                                  {formatCurrency(project.financial.currentAmount)} raised
-                                </span>
-                                <span className="text-xs text-slate-500">
-                                  {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
-                                </span>
-                              </div>
-                            </div>
+          </div>
+
+          <div className="space-y-4">
+            {developerProjects.slice(0, 3).map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+              >
+                <Link href={`/developer/projects/${project.id}`}>
+                  <div className="card-premium interactive-card rounded-2xl overflow-hidden">
+                    <div className="flex min-h-[120px]">
+                      {/* Project Image */}
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 relative overflow-hidden rounded-l-2xl flex-shrink-0">
+                        <img 
+                          src={project.images[0]} 
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2">
+                          <div className={`px-2 py-1 rounded-full text-xs font-bold flex items-center space-x-1 shadow-lg ${
+                            project.status === 'funding' 
+                              ? 'bg-blue-500 text-white' 
+                              : project.status === 'construction'
+                              ? 'bg-orange-500 text-white'
+                              : 'bg-green-500 text-white'
+                          }`}>
+                            {project.status === 'funding' && <PendingIcon className="w-3 h-3 flex-shrink-0" />}
+                            {project.status === 'construction' && <PendingIcon className="w-3 h-3 flex-shrink-0" />}
+                            {project.status === 'completed' && <CheckCircleIcon className="w-3 h-3 flex-shrink-0" />}
+                            <span className="whitespace-nowrap capitalize">{project.status}</span>
                           </div>
                         </div>
                       </div>
-                    </Link>
-                  </motion.div>
-                )
-              })}
-            </div>
+
+                      {/* Project Details */}
+                      <div className="flex-1 p-4 min-w-0">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-slate-900 text-base leading-tight mb-1 line-clamp-2">
+                              {project.title}
+                            </h3>
+                            <p className="text-slate-600 text-sm truncate flex items-center">
+                              <LocationOnIcon className="w-3 h-3 mr-1 flex-shrink-0" />
+                              {project.location.city}
+                            </p>
+                          </div>
+                          <div className="text-right flex-shrink-0 min-w-[60px]">
+                            <div className="text-lg font-bold text-blue-600">
+                              {project.financial.projectedROI}%
+                            </div>
+                            <div className="text-xs text-slate-500">ROI</div>
+                          </div>
+                        </div>
+
+                        {/* Enhanced Progress */}
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-xs gap-2">
+                            <span className="text-slate-600 truncate">
+                              {formatCurrency(project.financial.minimumInvestment)} min
+                            </span>
+                            <span className="font-semibold text-slate-900 flex-shrink-0">
+                              {Math.round((project.financial.currentAmount / project.financial.targetAmount) * 100)}% funded
+                            </span>
+                          </div>
+                          <div className="w-full bg-slate-200 rounded-full h-2">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ 
+                                width: `${Math.min((project.financial.currentAmount / project.financial.targetAmount) * 100, 100)}%` 
+                              }}
+                              transition={{ duration: 1, delay: 0.8 + index * 0.2 }}
+                              className="progress-bar h-2 rounded-full"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>

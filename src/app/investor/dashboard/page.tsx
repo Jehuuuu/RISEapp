@@ -53,10 +53,6 @@ export default function InvestorDashboard() {
 
   const featuredProjects = projects.filter(p => p.status === 'funding').slice(0, 3)
 
-  // Calculate portfolio performance (mock data for demo)
-  const portfolioChange = 12.5 // percentage
-  const monthlyReturns = 8750
-
   return (
     <div className="min-h-screen gradient-surface">
       {/* Enhanced Header with Glass Effect */}
@@ -139,21 +135,23 @@ export default function InvestorDashboard() {
           transition={{ delay: 0.4 }}
         >
           <div className="card-highlight rounded-2xl p-6 interactive-card">
-            <div className="flex items-center justify-between mb-6">
-              <div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div className="min-w-0 flex-1">
                 <h3 className="text-xl font-bold text-slate-900 mb-1">Portfolio Overview</h3>
                 <p className="text-slate-600">Your investment performance this quarter</p>
               </div>
-              <Link href="/investor/portfolio">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  rightIcon={<ArrowOutwardIcon className="w-4 h-4" />}
-                  className="btn-premium text-white border-none"
-                >
-                  View Details
-                </Button>
-              </Link>
+              <div className="flex-shrink-0">
+                <Link href="/investor/portfolio">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    rightIcon={<ArrowOutwardIcon className="w-4 h-4" />}
+                    className="btn-premium text-white border-none w-full sm:w-auto min-w-[140px]"
+                  >
+                    View Details
+                  </Button>
+                </Link>
+              </div>
             </div>
             
             {/* Enhanced Progress Visualization */}
@@ -199,20 +197,23 @@ export default function InvestorDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-1">Featured Opportunities</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1 truncate">Featured Opportunities</h2>
               <p className="text-slate-600">Handpicked investments for you</p>
             </div>
-            <Link href="/investor/browse">
-              <Button 
-                variant="outline" 
-                size="sm"
-                rightIcon={<ArrowOutwardIcon className="w-4 h-4" />}
-              >
-                View All
-              </Button>
-            </Link>
+            <div className="flex-shrink-0">
+              <Link href="/investor/browse">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  rightIcon={<ArrowOutwardIcon className="w-4 h-4" />}
+                  className="w-full sm:w-auto min-w-[120px]"
+                >
+                  View All
+                </Button>
+              </Link>
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -225,32 +226,32 @@ export default function InvestorDashboard() {
               >
                 <Link href={`/investor/project/${project.id}`}>
                   <div className="card-premium interactive-card rounded-2xl overflow-hidden">
-                    <div className="flex">
+                    <div className="flex min-h-[120px]">
                       {/* Project Image */}
-                      <div className="w-24 h-24 relative overflow-hidden rounded-l-2xl">
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 relative overflow-hidden rounded-l-2xl flex-shrink-0">
                         <img 
                           src={project.images[0]} 
                           alt={project.title}
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute top-2 left-2">
-                          <div className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center space-x-1">
-                            <StarIcon className="w-3 h-3" />
-                            <span>Featured</span>
+                          <div className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center space-x-1 shadow-lg">
+                            <StarIcon className="w-3 h-3 flex-shrink-0" />
+                            <span className="whitespace-nowrap">Featured</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Project Details */}
-                      <div className="flex-1 p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="font-bold text-slate-900 text-base leading-tight mb-1">
+                      <div className="flex-1 p-4 min-w-0">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-slate-900 text-base leading-tight mb-1 line-clamp-2">
                               {project.title}
                             </h3>
-                            <p className="text-slate-600 text-sm">{project.location.city}</p>
+                            <p className="text-slate-600 text-sm truncate">{project.location.city}</p>
                           </div>
-                          <div className="text-right">
+                          <div className="text-right flex-shrink-0 min-w-[60px]">
                             <div className="text-lg font-bold text-emerald-600">
                               {project.financial.projectedROI}%
                             </div>
@@ -260,11 +261,11 @@ export default function InvestorDashboard() {
 
                         {/* Enhanced Progress */}
                         <div className="space-y-2">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-600">
+                          <div className="flex justify-between text-xs gap-2">
+                            <span className="text-slate-600 truncate">
                               {formatCurrency(project.financial.minimumInvestment)} min
                             </span>
-                            <span className="font-semibold text-slate-900">
+                            <span className="font-semibold text-slate-900 flex-shrink-0">
                               {Math.round((project.financial.currentAmount / project.financial.targetAmount) * 100)}% funded
                             </span>
                           </div>
@@ -272,7 +273,7 @@ export default function InvestorDashboard() {
                             <motion.div 
                               initial={{ width: 0 }}
                               animate={{ 
-                                width: `${(project.financial.currentAmount / project.financial.targetAmount) * 100}%` 
+                                width: `${Math.min((project.financial.currentAmount / project.financial.targetAmount) * 100, 100)}%` 
                               }}
                               transition={{ duration: 1, delay: 0.8 + index * 0.2 }}
                               className="progress-bar h-2 rounded-full"
@@ -293,10 +294,10 @@ export default function InvestorDashboard() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="grid grid-cols-2 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           <Link href="/investor/browse">
-            <div className="card-highlight interactive-card rounded-2xl p-6 text-center">
+            <div className="card-highlight interactive-card rounded-2xl p-6 text-center min-h-[140px] flex flex-col justify-center">
               <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mx-auto mb-3 shadow-glow">
                 <BarChartIcon className="w-6 h-6 text-white" />
               </div>
@@ -306,7 +307,7 @@ export default function InvestorDashboard() {
           </Link>
           
           <Link href="/profile">
-            <div className="card-highlight interactive-card rounded-2xl p-6 text-center">
+            <div className="card-highlight interactive-card rounded-2xl p-6 text-center min-h-[140px] flex flex-col justify-center">
               <div className="w-12 h-12 gradient-success rounded-xl flex items-center justify-center mx-auto mb-3 shadow-glow-green">
                 <PersonIcon className="w-6 h-6 text-white" />
               </div>

@@ -10,7 +10,6 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import PendingActionsIcon from '@mui/icons-material/PendingActions'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import AssessmentIcon from '@mui/icons-material/Assessment'
-import SecurityIcon from '@mui/icons-material/Security'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { motion } from 'framer-motion'
@@ -237,84 +236,70 @@ export default function AdminDashboard() {
           </Link>
         </motion.div>
 
-        {/* Recent Platform Activity */}
+        {/* Recent System Activity */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <div className="card-highlight rounded-2xl p-6 interactive-card">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-1">Recent Activity</h3>
-                <p className="text-slate-600">Latest platform transactions</p>
-              </div>
-              <Link href="/admin/transactions">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="btn-premium text-white border-none"
-                >
-                  View All
-                </Button>
-              </Link>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1 truncate">Recent System Activity</h2>
+              <p className="text-slate-600">Latest transactions and user activities</p>
             </div>
-            
-            <div className="space-y-4">
-              {recentTransactions.slice(0, 5).map((transaction, index) => {
-                const user = users.find(u => u.id === transaction.userId)
-                
-                return (
-                  <motion.div
-                    key={transaction.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="glass-card interactive-card rounded-2xl p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                            transaction.type === 'investment' ? 'bg-sky-100' : 
-                            transaction.type === 'dividend' ? 'bg-emerald-100' : 'bg-amber-100'
-                          }`}>
-                            {transaction.type === 'investment' ? (
-                              <TrendingUpIcon className="w-6 h-6 text-sky-600" />
-                            ) : transaction.type === 'dividend' ? (
-                              <AttachMoneyIcon className="w-6 h-6 text-emerald-600" />
-                            ) : (
-                              <SecurityIcon className="w-6 h-6 text-amber-600" />
-                            )}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-slate-900 capitalize">{transaction.type}</h4>
-                            <p className="text-sm text-slate-600">
-                              {user?.name || 'Unknown User'} • {getTimeAgo(transaction.timestamp)}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-xl font-bold text-emerald-600">
-                            {formatCurrency(transaction.amount)}
+            <div className="flex-shrink-0">
+              <Button 
+                variant="outline" 
+                size="sm"
+                rightIcon={<RefreshIcon className="w-4 h-4" />}
+                className="w-full sm:w-auto min-w-[120px]"
+              >
+                Refresh
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {recentTransactions.map((transaction, index) => (
+              <motion.div
+                key={transaction.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 + index * 0.05 }}
+              >
+                <div className="card-premium interactive-card rounded-2xl p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                      <AttachMoneyIcon className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-slate-900 text-sm leading-tight truncate">
+                            {`${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)} Transaction`}
+                          </h4>
+                          <p className="text-xs text-slate-600 truncate">
+                            {transaction.type} • {getTimeAgo(transaction.timestamp)}
                           </p>
-                          <span className="text-xs px-3 py-1 rounded-full font-medium bg-emerald-100 text-emerald-800">
+                        </div>
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-bold text-sm text-slate-900">
+                            {formatCurrency(transaction.amount)}
+                          </div>
+                          <div className={`text-xs px-2 py-1 rounded-full ${
+                            transaction.status === 'completed' 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-orange-100 text-orange-700'
+                          }`}>
                             {transaction.status}
-                          </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </motion.div>
-                )
-              })}
-              
-              {recentTransactions.length === 0 && (
-                <div className="glass-card rounded-2xl p-8 text-center">
-                  <AttachMoneyIcon className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                  <h4 className="text-lg font-semibold text-slate-900 mb-2">No recent activity</h4>
-                  <p className="text-slate-600">Transaction activity will appear here</p>
+                  </div>
                 </div>
-              )}
-            </div>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>
