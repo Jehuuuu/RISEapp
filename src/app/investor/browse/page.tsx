@@ -393,118 +393,129 @@ export default function BrowsePage() {
                   <Link href={`/investor/project/${project.id}`}>
                     <div className="card-premium interactive-card rounded-3xl overflow-hidden shadow-premium">
                       <div className="relative">
-                        {/* Enhanced Project Image */}
-                        <div className="relative h-48 overflow-hidden">
+                        {/* Enhanced Project Image with Safe Positioning */}
+                        <div className="relative h-48 sm:h-56 overflow-hidden">
                           <img 
                             src={project.images[0]} 
                             alt={project.title}
                             className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                           />
                           
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                          {/* Gradient Overlay for Better Text Readability */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30"></div>
                           
-                          {/* Status Badge */}
-                          <div className="absolute top-4 left-4">
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: index * 0.1 + 0.3 }}
-                              className={`px-4 py-2 rounded-2xl text-sm font-bold shadow-lg backdrop-blur-lg ${
-                                project.status === 'funding' ? 'bg-amber-500/90 text-white' :
-                                project.status === 'funded' ? 'bg-emerald-500/90 text-white' :
-                                project.status === 'construction' ? 'bg-violet-500/90 text-white' :
-                                'bg-sky-500/90 text-white'
-                              }`}
-                            >
-                              {project.status.toUpperCase()}
-                            </motion.div>
+                          {/* Top Badges Container with Proper Spacing */}
+                          <div className="absolute top-3 left-3 right-3 z-20">
+                            <div className="flex items-start justify-between gap-3">
+                              {/* Status Badge - Left Side */}
+                              <motion.div
+                                initial={{ scale: 0, x: -20 }}
+                                animate={{ scale: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 + 0.3 }}
+                                className="flex-shrink-0"
+                              >
+                                <div className={`px-3 py-1.5 rounded-xl text-xs font-bold shadow-lg backdrop-blur-lg border border-white/20 ${
+                                  project.status === 'funding' ? 'bg-amber-500/90 text-white' :
+                                  project.status === 'funded' ? 'bg-emerald-500/90 text-white' :
+                                  project.status === 'construction' ? 'bg-violet-500/90 text-white' :
+                                  'bg-sky-500/90 text-white'
+                                }`}>
+                                  {project.status.toUpperCase()}
+                                </div>
+                              </motion.div>
+
+                              {/* ROI Badge - Right Side */}
+                              <motion.div
+                                initial={{ scale: 0, x: 20 }}
+                                animate={{ scale: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 + 0.4 }}
+                                className="flex-shrink-0"
+                              >
+                                <div className="glass-card-dark rounded-xl px-3 py-2 shadow-lg border border-white/10">
+                                  <div className="text-center min-w-[50px]">
+                                    <div className="text-lg font-bold text-white leading-none">{project.financial.projectedROI}%</div>
+                                    <div className="text-xs text-white/80 font-medium mt-0.5">ROI</div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            </div>
                           </div>
 
-                          {/* ROI Badge */}
-                          <div className="absolute top-4 right-4">
+                          {/* Project Title Overlay - Safe Bottom Area */}
+                          <div className="absolute bottom-3 left-3 right-3 z-10">
                             <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: index * 0.1 + 0.4 }}
-                              className="glass-card-dark rounded-2xl px-4 py-2"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1 + 0.5 }}
                             >
-                              <div className="text-center">
-                                <div className="text-2xl font-bold text-white">{project.financial.projectedROI}%</div>
-                                <div className="text-xs text-white/80 font-medium">ROI</div>
+                              <h3 className="text-lg sm:text-xl font-bold text-white mb-2 drop-shadow-lg line-clamp-2 leading-tight">
+                                {project.title}
+                              </h3>
+                              <div className="flex items-center text-white/90">
+                                <LocationOnIcon className="w-4 h-4 mr-2 flex-shrink-0" />
+                                <span className="text-sm font-medium truncate">{project.location.city}</span>
                               </div>
                             </motion.div>
                           </div>
-
-                          {/* Project Title Overlay */}
-                          <div className="absolute bottom-4 left-4 right-4">
-                            <h3 className="text-xl font-bold text-white mb-1 drop-shadow-lg">
-                              {project.title}
-                            </h3>
-                            <div className="flex items-center text-white/90">
-                              <LocationOnIcon className="w-4 h-4 mr-1" />
-                              <span className="text-sm font-medium">{project.location.city}</span>
-                            </div>
-                          </div>
                         </div>
 
-                        {/* Enhanced Project Details */}
-                        <div className="p-6">
-                          {/* Progress Section */}
+                        {/* Enhanced Project Details with Better Spacing */}
+                        <div className="p-5 sm:p-6">
+                          {/* Progress Section with Enhanced Visual */}
                           <div className="mb-6">
                             <div className="flex justify-between items-center mb-3">
                               <span className="text-sm font-medium text-slate-600">Funding Progress</span>
                               <span className="text-lg font-bold text-slate-900">{Math.round(fundingProgress)}%</span>
                             </div>
-                            <div className="relative w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                            <div className="relative w-full bg-slate-200 rounded-full h-3 overflow-hidden shadow-inner">
                               <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${Math.min(fundingProgress, 100)}%` }}
                                 transition={{ 
                                   duration: 1.5, 
-                                  delay: index * 0.1 + 0.5,
+                                  delay: index * 0.1 + 0.6,
                                   ease: "easeOut"
                                 }}
-                                className="progress-bar h-3 rounded-full"
+                                className="progress-bar h-3 rounded-full shadow-sm"
                               />
                             </div>
                           </div>
 
-                          {/* Stats Grid */}
-                          <div className="grid grid-cols-3 gap-4 mb-6">
-                            <div className="text-center p-4 glass-card rounded-2xl">
-                              <div className="text-lg font-bold text-slate-900 mb-1">
+                          {/* Responsive Stats Grid */}
+                          <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
+                              <div className="text-sm sm:text-lg font-bold text-slate-900 mb-1 truncate">
                                 {formatCurrency(project.financial.minimumInvestment)}
                               </div>
                               <div className="text-xs text-slate-500 font-medium">Min. Investment</div>
                             </div>
-                            <div className="text-center p-4 glass-card rounded-2xl">
-                              <div className="text-lg font-bold text-emerald-600 mb-1">
+                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
+                              <div className="text-sm sm:text-lg font-bold text-emerald-600 mb-1 truncate">
                                 {formatCurrency(project.financial.currentAmount)}
                               </div>
                               <div className="text-xs text-slate-500 font-medium">Raised</div>
                             </div>
-                            <div className="text-center p-4 glass-card rounded-2xl">
-                              <div className="text-lg font-bold text-sky-600 mb-1">{project.investors}</div>
+                            <div className="text-center p-3 sm:p-4 glass-card rounded-xl">
+                              <div className="text-sm sm:text-lg font-bold text-sky-600 mb-1">{project.investors}</div>
                               <div className="text-xs text-slate-500 font-medium">Investors</div>
                             </div>
                           </div>
 
-                          {/* Footer Info */}
-                          <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center space-x-2 text-slate-600">
-                              <PeopleIcon className="w-4 h-4" />
-                              <span className="font-medium">{project.developer}</span>
+                          {/* Enhanced Footer Info with Better Layout */}
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm">
+                            <div className="flex items-center space-x-2 text-slate-600 min-w-0">
+                              <PeopleIcon className="w-4 h-4 flex-shrink-0" />
+                              <span className="font-medium truncate">{project.developer}</span>
                             </div>
                             {project.status === 'funding' && daysLeft > 0 && (
                               <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.1 + 0.7 }}
-                                className="flex items-center space-x-1 text-amber-600 font-semibold"
+                                className="flex items-center space-x-1 text-amber-600 font-semibold bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200 flex-shrink-0"
                               >
                                 <CalendarTodayIcon className="w-4 h-4" />
-                                <span>{daysLeft} days left</span>
+                                <span className="whitespace-nowrap">{daysLeft} days left</span>
                               </motion.div>
                             )}
                           </div>
@@ -518,20 +529,42 @@ export default function BrowsePage() {
           </AnimatePresence>
 
           {filteredProjects.length === 0 && (
-            <Card padding="lg" className="text-center">
-              <div className="py-8">
-                <SearchIcon className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">No projects found</h3>
-                <p className="text-slate-600 mb-6">
-                  Try adjusting your filters or search terms
-                </p>
-                {hasActiveFilters && (
-                  <Button onClick={clearFilters}>
-                    Clear All Filters
-                  </Button>
-                )}
-              </div>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card padding="lg" className="text-center">
+                <div className="py-12">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <SearchIcon className="w-20 h-20 text-slate-400 mx-auto mb-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">No projects found</h3>
+                  <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                    Try adjusting your filters or search terms to discover more investment opportunities
+                  </p>
+                  {hasActiveFilters && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <Button 
+                        onClick={clearFilters}
+                        className="btn-premium"
+                        size="lg"
+                      >
+                        Clear All Filters
+                      </Button>
+                    </motion.div>
+                  )}
+                </div>
+              </Card>
+            </motion.div>
           )}
         </div>
       </div>
