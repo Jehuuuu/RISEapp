@@ -8,6 +8,7 @@ import GroupIcon from '@mui/icons-material/Group'
 import BusinessIcon from '@mui/icons-material/Business'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import SettingsIcon from '@mui/icons-material/Settings'
+import PersonIcon from '@mui/icons-material/Person'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -16,7 +17,7 @@ const navItems = [
   { href: '/admin/users', icon: GroupIcon, label: 'Users' },
   { href: '/admin/projects', icon: BusinessIcon, label: 'Projects' },
   { href: '/admin/analytics', icon: BarChartIcon, label: 'Analytics' },
-  { href: '/admin/settings', icon: SettingsIcon, label: 'Settings' },
+  { href: '/profile', icon: PersonIcon, label: 'Profile' },
 ]
 
 export default function AdminLayout({
